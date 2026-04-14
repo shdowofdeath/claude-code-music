@@ -43,13 +43,35 @@ export SPOTIFY_CLIENT_SECRET="your_client_secret"
 
 ### 3. Install the plugin
 
-Clone this repo into your project (or anywhere Claude Code can find it):
+**Option A: Plugin Marketplace (recommended)**
 
-```bash
-git clone https://github.com/shdowofdeath/claude-code-music.git
+Inside Claude Code, run:
+
+```
+/plugin install claude-code-music@claude-code-music
 ```
 
-The `.claude-plugin/` directory is auto-discovered by Claude Code. The MCP Spotify server is fetched automatically via `npx` — no separate install needed.
+If the marketplace isn't registered yet, add it once to `~/.claude/settings.json`:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "claude-code-music": {
+      "source": { "source": "github", "repo": "shdowofdeath/claude-code-music" },
+      "autoUpdate": true
+    }
+  }
+}
+```
+
+**Option B: Direct install**
+
+```bash
+cd your-project
+git clone https://github.com/shdowofdeath/claude-code-music.git .claude-code-music
+```
+
+The plugin is auto-discovered by Claude Code. The MCP Spotify server is fetched automatically via `npx` — no separate install needed.
 
 ### 4. Run setup
 
@@ -73,7 +95,7 @@ See the current song at the bottom of Claude Code:
 // Add to .claude/settings.json
 {
   "statusLine": {
-    "command": ".claude-plugin/scripts/now-playing.sh",
+    "command": "scripts/now-playing.sh",
     "interval": 10
   }
 }
@@ -148,23 +170,23 @@ Edit the file directly anytime — changes take effect immediately.
 
 ```
 claude-code-music/
-└── .claude-plugin/
-    ├── plugin.json              # Plugin manifest
-    ├── .mcp.json                # Auto-starts Spotify MCP server via npx
-    ├── commands/
-    │   ├── music.md             # /music command
-    │   └── music-setup.md       # /music-setup wizard
-    ├── hooks/
-    │   └── hooks.json           # Session start, mood detection, celebrations
-    ├── scripts/
-    │   ├── now-playing.sh       # Status line (♫ Song - Artist | HH:MM)
-    │   └── speak.sh             # TTS announcements
-    ├── skills/
-    │   └── music/
-    │       ├── SKILL.md         # Main DJ brain
-    │       └── references/
-    │           └── preferences-template.md
-    └── STATUSLINE.md            # Status line setup guide
+├── .claude-plugin/
+│   └── plugin.json              # Plugin manifest
+├── .mcp.json                    # Auto-starts Spotify MCP server via npx
+├── commands/
+│   ├── music.md                 # /music command
+│   └── music-setup.md           # /music-setup wizard
+├── hooks/
+│   └── hooks.json               # Session start, mood detection, celebrations
+├── scripts/
+│   ├── now-playing.sh           # Status line (♫ Song - Artist | HH:MM)
+│   └── speak.sh                 # TTS announcements
+├── skills/
+│   └── music/
+│       ├── SKILL.md             # Main DJ brain
+│       └── references/
+│           └── preferences-template.md
+└── STATUSLINE.md                # Status line setup guide
 ```
 
 The plugin uses the [mcp-claude-spotify](https://github.com/imprvhub/mcp-claude-spotify) MCP server for Spotify API access. It's fetched automatically via `npx` — no manual installation required.

@@ -103,7 +103,7 @@ Default: yes (audio_enabled: true)
 Once all questions are answered, create the preferences file at `.claude/claude-code-music.local.md` in the project directory.
 
 First, read the template from the plugin's references to use as a base:
-- Read `${CLAUDE_PLUGIN_ROOT}/skills/music/references/preferences-template.md`
+- Read `skills/music/references/preferences-template.md`
 
 Then write the file at `.claude/claude-code-music.local.md` using this structure — fill in ALL fields from the user's answers:
 
@@ -172,8 +172,8 @@ Use `mcp__spotify__get-recommendations` with the genres from the user's chosen d
 Pick the first result and play it with `mcp__spotify__play-track`.
 
 If it works, confirm what's playing. If audio_enabled is true, also run these commands to demo the audio:
-- `.claude-plugin/scripts/speak.sh song` — announces the track aloud
-- `.claude-plugin/scripts/speak.sh time` — speaks the current time
+- `scripts/speak.sh song` — announces the track aloud
+- `scripts/speak.sh time` — speaks the current time
 
 If playback fails (no active device), remind them to open Spotify and let them know they can test later with `/music <mood>`.
 

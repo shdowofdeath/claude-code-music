@@ -9,7 +9,7 @@ Add the following to your Claude Code settings file (`.claude/settings.json` in 
 ```json
 {
   "statusLine": {
-    "command": ".claude-plugin/scripts/now-playing.sh",
+    "command": "scripts/now-playing.sh",
     "interval": 10
   }
 }
@@ -48,7 +48,7 @@ Long track names and artist names are automatically truncated to keep the status
 Test the script directly to verify it works:
 
 ```bash
-.claude-plugin/scripts/now-playing.sh
+scripts/now-playing.sh
 ```
 
 If you only see the time and Spotify is playing, check that the Spotify desktop app is running (not just the web player).

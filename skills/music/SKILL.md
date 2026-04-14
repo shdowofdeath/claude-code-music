@@ -155,12 +155,12 @@ Pick a completely random mood and go wild with the recommendations. Be creative 
 
 ## Audio Announcements
 
-The plugin has a text-to-speech system via `.claude-plugin/scripts/speak.sh`. When `audio_enabled` is `true` (the default), use Bash to run these commands at the right moments:
+The plugin has a text-to-speech system via `scripts/speak.sh`. When `audio_enabled` is `true` (the default), use Bash to run these commands at the right moments:
 
-- **Announce time:** `.claude-plugin/scripts/speak.sh time` — says "The time is 2:30 PM"
-- **Announce song:** `.claude-plugin/scripts/speak.sh song` — says "Now playing: Song by Artist"
-- **Announce task completion:** `.claude-plugin/scripts/speak.sh task "description"` — says "Finished: description"
-- **Custom speech:** `.claude-plugin/scripts/speak.sh custom "any text"` — says anything
+- **Announce time:** `scripts/speak.sh time` — says "The time is 2:30 PM"
+- **Announce song:** `scripts/speak.sh song` — says "Now playing: Song by Artist"
+- **Announce task completion:** `scripts/speak.sh task "description"` — says "Finished: description"
+- **Custom speech:** `scripts/speak.sh custom "any text"` — says anything
 
 ### When to use audio:
 - **Song announcement:** After playing a new track (mood change, /music command, celebration)
