@@ -37,6 +37,7 @@ Before taking action, check if the user has a preferences file at `.claude/claud
 ```yaml
 ---
 auto_play: true/false          # Start music on session start
+audio_enabled: true/false      # TTS announcements (time, songs, task completion). Default: true
 focus_genres: [...]            # Genres for deep focus
 debug_genres: [...]            # Genres for debugging
 hype_genres: [...]             # Genres for shipping/deploying
@@ -150,6 +151,24 @@ Search for and play a specific playlist:
 
 ### `/music surprise`
 Pick a completely random mood and go wild with the recommendations. Be creative and fun about it.
+
+## Audio Announcements
+
+The plugin has a text-to-speech system via `.claude-plugin/scripts/speak.sh`. When `audio_enabled` is `true` (the default), use Bash to run these commands at the right moments:
+
+- **Announce time:** `.claude-plugin/scripts/speak.sh time` — says "The time is 2:30 PM"
+- **Announce song:** `.claude-plugin/scripts/speak.sh song` — says "Now playing: Song by Artist"
+- **Announce task completion:** `.claude-plugin/scripts/speak.sh task "description"` — says "Finished: description"
+- **Custom speech:** `.claude-plugin/scripts/speak.sh custom "any text"` — says anything
+
+### When to use audio:
+- **Song announcement:** After playing a new track (mood change, /music command, celebration)
+- **Task completion:** After finishing significant work (feature, bug fix, tests passing, deploy). Keep task name to 2-5 words.
+- **Time announcement:** On session start (if auto_play is on) and after task completion
+- **Never during:** Normal responses, answering questions, showing code. Only on completions and music changes.
+
+### Checking if enabled:
+Read `.claude/claude-code-music.local.md` — if `audio_enabled` is `false`, skip all audio. If the field is missing or the file doesn't exist, audio is **enabled by default**.
 
 ## Smart Behavior Guidelines
 

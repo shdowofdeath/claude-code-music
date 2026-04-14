@@ -9,6 +9,11 @@ When the user runs `/music taste`, create or update the file `.claude/claude-cod
 
 auto_play: false
 
+# Audio announcements (text-to-speech)
+# Speaks: current time, song changes, task completions
+# Default: true (set to false to disable)
+audio_enabled: true
+
 # Genres per mood (comma-separated)
 # Available moods: focus, debug, hype, chill, refactor, flow
 focus_genres: [ambient, electronic, classical, post-rock]
@@ -57,5 +62,7 @@ When setting up preferences, ask these questions one at a time:
 5. "Do you prefer instrumental/no-lyrics during focus?" (no_lyrics_during_focus)
 6. "Do you have any specific Spotify playlists you'd like mapped to moods? (paste Spotify URIs)"
 7. "Any favorite artists I should use to seed recommendations?"
+
+8. "Want audio announcements? I can speak the time, announce song changes, and say when tasks finish. It's on by default — want to keep it?" (audio_enabled)
 
 Don't ask all at once. Make it conversational. Accept casual answers like "lo-fi and jazz" and map them to the right fields.

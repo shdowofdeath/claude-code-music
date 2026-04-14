@@ -36,6 +36,7 @@ An intelligent Claude Code plugin that turns Spotify into your personal coding D
 - **Automatic mood detection** — detects frustration, triumph, and deep focus from your prompts and adjusts music
 - **Session-aware** — auto-plays music when you start coding (if enabled)
 - **Celebrates with you** — plays a hype track when you finish a big task
+- **Audio announcements** — speaks the time, current song, and "Finished: task name" aloud (enabled by default, toggle with `audio_enabled: false`)
 - **Learns your taste** — `/music-setup` analyzes your Spotify history and builds personalized preferences
 - **Status line** — shows `♫ Song - Artist | 14:32` at the bottom of Claude Code
 
@@ -62,6 +63,7 @@ $ claude
 
 > /music focus
   Now playing: Awake - Tycho (focus mode)
+  🔊 "Now playing: Awake by Tycho"
 
 > ugh this bug is killing me
   [Claude helps fix the bug]
@@ -70,6 +72,7 @@ $ claude
 > it works! let's ship it!
   [Claude helps deploy]
   ...hype track incoming
+  🔊 "Finished: deploy to production. The time is 3:45 PM"
 ```
 
 ## Requirements
@@ -147,6 +150,18 @@ The plugin passively reads your prompts and adjusts music when it detects strong
 - **"let me think about this architecture"** → shifts to ambient focus
 
 It only acts on strong signals and only when music is already playing. No annoying interruptions.
+
+### Audio Announcements
+
+The plugin speaks aloud using text-to-speech (macOS `say`, Linux `espeak`/`spd-say`):
+
+| Event | What it says |
+|-------|-------------|
+| Song change | "Now playing: Song by Artist" |
+| Task completion | "Finished: authentication feature" |
+| Time check | "The time is 3:45 PM" |
+
+**Enabled by default.** To disable, set `audio_enabled: false` in `.claude/claude-code-music.local.md` or during `/music-setup`.
 
 ---
 
