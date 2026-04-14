@@ -28,6 +28,17 @@
 - Access user's top played tracks over different time periods
 - View recently played tracks
 
+### Coding DJ Plugin (NEW)
+
+An intelligent Claude Code plugin that turns Spotify into your personal coding DJ:
+
+- **Mood-based music** — `/music focus`, `/music hype`, `/music chill`, `/music debug`, `/music flow`
+- **Automatic mood detection** — detects frustration, triumph, and deep focus from your prompts and adjusts music
+- **Session-aware** — auto-plays music when you start coding (if enabled)
+- **Celebrates with you** — plays a hype track when you finish a big task
+- **Learns your taste** — `/music-setup` analyzes your Spotify history and builds personalized preferences
+- **Status line** — shows `♫ Song - Artist | 14:32` at the bottom of Claude Code
+
 ## Demo
 
 <p>
@@ -36,14 +47,110 @@
   </a>
 </p>
 
+### Coding DJ Demo
+
+```
+$ claude
+
+  ♫ Lo-fi Beats - Chillhop | 14:32
+
+> /music-setup
+  Hey! Let's get your coding DJ set up...
+  Found Spotify running on MacBook Pro.
+  You've been listening to a lot of Tycho and Bonobo lately...
+  Want music to auto-start when you open Claude Code? (yes/no)
+
+> /music focus
+  Now playing: Awake - Tycho (focus mode)
+
+> ugh this bug is killing me
+  [Claude helps fix the bug]
+  ...switched to something calmer
+
+> it works! let's ship it!
+  [Claude helps deploy]
+  ...hype track incoming
+```
+
 ## Requirements
 
 - Node.js 16 or higher
 - Spotify account
-- Claude Desktop
+- Claude Desktop or Claude Code
 - Spotify API credentials (Client ID and Client Secret)
 
-## Installation
+## Quick Start (Coding DJ Plugin)
+
+Get the intelligent coding DJ running in 60 seconds:
+
+```bash
+# 1. Clone and build
+git clone https://github.com/imprvhub/mcp-claude-spotify
+cd mcp-claude-spotify && npm install && npm run build
+
+# 2. Set your Spotify credentials
+export SPOTIFY_CLIENT_ID="your_client_id"
+export SPOTIFY_CLIENT_SECRET="your_client_secret"
+
+# 3. Open Claude Code in this directory
+claude
+
+# 4. Run the setup wizard
+/music-setup
+```
+
+That's it. The `/music-setup` wizard will:
+1. Authenticate with Spotify
+2. Learn your music taste from your listening history
+3. Set up your mood preferences
+4. Play a test track to confirm everything works
+
+### Status Line (optional)
+
+See the current song and time at the bottom of Claude Code:
+
+```bash
+# Add to your .claude/settings.json:
+{
+  "statusLine": {
+    "command": ".claude-plugin/scripts/now-playing.sh",
+    "interval": 10
+  }
+}
+```
+
+Output: `♫ Song Name - Artist | 14:32`
+
+### Available Commands
+
+| Command | What it does |
+|---------|-------------|
+| `/music-setup` | First-time setup wizard |
+| `/music focus` | Deep focus mode (ambient, classical, post-rock) |
+| `/music hype` | Ship-it energy (synthwave, electronic, d&b) |
+| `/music chill` | Casual coding vibes (indie, acoustic, dream-pop) |
+| `/music debug` | Calming debug music (lo-fi, jazz, chillhop) |
+| `/music refactor` | Structured cleaning (classical, jazz, piano) |
+| `/music flow` | In-the-zone (trance, progressive, techno) |
+| `/music pause` | Pause playback |
+| `/music skip` | Next track |
+| `/music status` | Show what's playing |
+| `/music surprise` | Random mood, creative pick |
+| `/music taste` | Update your preferences |
+
+### How Mood Detection Works
+
+The plugin passively reads your prompts and adjusts music when it detects strong signals:
+
+- **"ugh this bug is killing me"** → switches to calming lo-fi
+- **"it works! let's ship it!"** → drops a hype track
+- **"let me think about this architecture"** → shifts to ambient focus
+
+It only acts on strong signals and only when music is already playing. No annoying interruptions.
+
+---
+
+## Installation (MCP Server)
 
 ### Installing via Smithery
 

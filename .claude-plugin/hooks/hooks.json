@@ -1,0 +1,34 @@
+{
+  "hooks": [
+    {
+      "event": "SessionStart",
+      "matcher": {},
+      "hooks": [
+        {
+          "type": "prompt",
+          "prompt": "Check if the user has music preferences at .claude/claude-code-music.local.md in the project directory. If the file exists and auto_play is true: (1) Read preferences to get the default_mood (use 'chill' if not set), (2) Use mcp__spotify__get-recommendations with the genres for that mood as seedGenres, limit 5, (3) Play the first result with mcp__spotify__play-track, (4) Say one short line: 'Music on: Track by Artist (mood mode). /music to control.' If auto_play is false or the file doesn't exist, do nothing — stay completely silent about music."
+        }
+      ]
+    },
+    {
+      "event": "UserPromptSubmit",
+      "matcher": {},
+      "hooks": [
+        {
+          "type": "prompt",
+          "prompt": "You have passive awareness of the developer's mood. ONLY adjust music when there is a STRONG emotional signal in the user's prompt AND music is already playing. First call mcp__spotify__get-current-playback — if nothing is playing, do nothing. Check if .claude/claude-code-music.local.md exists — if auto_play is false, do nothing. FRUSTRATION signals (bug, broken, wtf, why isn't this working, error, failing, stuck, ugh): switch to calming music with seedGenres [lo-fi, jazz, ambient]. TRIUMPH signals (it works, finally, ship it, deploy, let's go, done, nailed it, merged): switch to hype music with seedGenres [electronic, synthwave, drum-and-bass]. DEEP FOCUS signals (let me think, complex, architect, design, plan this out, big refactor): switch to focus music with seedGenres [ambient, classical, post-rock]. For normal coding prompts, do NOT change music. If you do change a track, add only ~5 words at the end of your response like 'switched to something calmer' or 'hype track incoming'. Never announce mood detection — that's patronizing. Answer the user's actual question first, music is secondary."
+        }
+      ]
+    },
+    {
+      "event": "Stop",
+      "matcher": {},
+      "hooks": [
+        {
+          "type": "prompt",
+          "prompt": "If your response just completed a significant piece of work (merged PR, deployed, finished a feature, all tests passing), consider a celebratory moment. ONLY act if ALL of these are true: (1) music is currently playing (check mcp__spotify__get-current-playback — if nothing playing, skip entirely), (2) you completed something meaningful (not just answering a question), (3) user preferences don't have auto_play: false, (4) you haven't already changed music in this response. If all conditions met, play one hype track using mcp__spotify__get-recommendations with seedGenres [electronic, pop, indie-rock] and limit 1. If any condition is false, do absolutely nothing."
+        }
+      ]
+    }
+  ]
+}

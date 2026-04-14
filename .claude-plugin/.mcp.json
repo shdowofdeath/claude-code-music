@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "spotify": {
+      "command": "node",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/../build/index.js"],
+      "env": {
+        "SPOTIFY_CLIENT_ID": "${SPOTIFY_CLIENT_ID}",
+        "SPOTIFY_CLIENT_SECRET": "${SPOTIFY_CLIENT_SECRET}"
+      }
+    }
+  }
+}
