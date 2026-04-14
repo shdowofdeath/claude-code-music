@@ -13,6 +13,10 @@ auto_play: false
 # Speaks: current time, song changes, task completions
 # Default: true (set to false to disable)
 audio_enabled: true
+# Voice for macOS (run `say -v '?'` to see all voices)
+# Good options: Samantha, Daniel, Karen, Moira, Tessa
+# Default: Samantha
+audio_voice: Samantha
 
 # Genres per mood (comma-separated)
 # Available moods: focus, debug, hype, chill, refactor, flow

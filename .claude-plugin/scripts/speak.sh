@@ -31,20 +31,38 @@ is_audio_enabled() {
   return 0
 }
 
+# ─── Read voice preference ────────────────────────────────────────────
+get_voice() {
+  local default_voice="Samantha"
+  if [[ ! -f "$PREFS_FILE" ]]; then
+    echo "$default_voice"
+    return
+  fi
+  local val
+  val=$(sed -n '/^---$/,/^---$/p' "$PREFS_FILE" | grep -E '^\s*audio_voice:' | head -1 | sed 's/.*:\s*//' | tr -d '[:space:]') || true
+  if [[ -n "$val" && "$val" != '""' ]]; then
+    echo "$val"
+  else
+    echo "$default_voice"
+  fi
+}
+
 # ─── Cross-platform TTS ──────────────────────────────────────────────
 speak() {
   local text="$1"
   case "$(uname -s)" in
     Darwin)
-      say "$text" &
+      local voice
+      voice=$(get_voice)
+      say -v "$voice" -r 185 "$text" &
       ;;
     Linux)
       if command -v spd-say &>/dev/null; then
-        spd-say "$text" &
+        spd-say -r 10 "$text" &
       elif command -v espeak &>/dev/null; then
-        espeak "$text" &
+        espeak -s 170 "$text" &
       elif command -v espeak-ng &>/dev/null; then
-        espeak-ng "$text" &
+        espeak-ng -s 170 "$text" &
       fi
       ;;
   esac

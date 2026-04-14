@@ -38,6 +38,7 @@ Before taking action, check if the user has a preferences file at `.claude/claud
 ---
 auto_play: true/false          # Start music on session start
 audio_enabled: true/false      # TTS announcements (time, songs, task completion). Default: true
+audio_voice: Samantha          # macOS voice (run `say -v '?'` to list). Default: Samantha
 focus_genres: [...]            # Genres for deep focus
 debug_genres: [...]            # Genres for debugging
 hype_genres: [...]             # Genres for shipping/deploying
