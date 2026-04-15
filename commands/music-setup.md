@@ -1,7 +1,7 @@
 ---
 description: "First-time setup wizard — authenticate Spotify, learn your taste, and configure your coding DJ"
 allowed-tools:
-  - "mcp__spotify__*"
+  - "Bash"
   - "Read"
   - "Write"
 ---
@@ -15,6 +15,7 @@ You are running the first-time setup wizard for Claude Code Music, the intellige
 - Keep each message short and warm. No walls of text.
 - If a step fails, explain what went wrong in plain language and offer to retry or skip.
 - Use the user's actual Spotify data to make smart suggestions throughout.
+- All Spotify commands use `${CLAUDE_PLUGIN_ROOT}/scripts/spotify.sh` via Bash.
 
 ---
 
@@ -24,9 +25,9 @@ Start by greeting the user:
 
 > Hey! Let's get your coding DJ set up. First, I need to connect to your Spotify account.
 
-Call `mcp__spotify__auth-spotify`.
+Run `${CLAUDE_PLUGIN_ROOT}/scripts/spotify.sh auth`
 
-- If authentication succeeds, confirm it and move to Step 2.
+- If authentication succeeds (JSON contains "authenticated"), confirm it and move to Step 2.
 - If it opens a browser for OAuth, tell the user: "I've opened your browser for Spotify login. Authorize the app and come back here when you're done." Then wait for the user to confirm before continuing.
 - If it fails, explain the error and suggest checking that `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` are set in their environment.
 
@@ -34,10 +35,10 @@ Call `mcp__spotify__auth-spotify`.
 
 ## Step 2: Verify Playback Device
 
-Call `mcp__spotify__get-current-playback` to check for an active Spotify device.
+Run `${CLAUDE_PLUGIN_ROOT}/scripts/spotify.sh status` to check for an active Spotify device.
 
 - **If a device is active:** Great — note the device name and tell the user (e.g., "Found Spotify running on *MacBook Pro*. Perfect."). Move to Step 3.
-- **If no device is found:** Tell the user: "I don't see Spotify active on any device. Open Spotify on your computer, phone, or any device — even just having it open in the background is enough. Let me know when it's ready." Wait for their confirmation, then check again with `mcp__spotify__get-current-playback`. If still nothing, note that playback won't work until they open Spotify but continue with preference setup anyway.
+- **If no device is found:** Tell the user: "I don't see Spotify active on any device. Open Spotify on your computer, phone, or any device — even just having it open in the background is enough. Let me know when it's ready." Wait for their confirmation, then check again. If still nothing, note that playback won't work until they open Spotify but continue with preference setup anyway.
 
 ---
 
@@ -46,9 +47,9 @@ Call `mcp__spotify__get-current-playback` to check for an active Spotify device.
 Tell the user you're going to peek at their listening history to make better recommendations.
 
 Make these calls to gather taste data:
-1. `mcp__spotify__get-top-tracks` with `timeRange: "short_term"`, `limit: 10` — what they've been into lately
-2. `mcp__spotify__get-top-tracks` with `timeRange: "long_term"`, `limit: 10` — their all-time favorites
-3. `mcp__spotify__get-user-playlists` with `limit: 20` — their existing playlists
+1. `${CLAUDE_PLUGIN_ROOT}/scripts/spotify.sh top-tracks short_term 10` — what they've been into lately
+2. `${CLAUDE_PLUGIN_ROOT}/scripts/spotify.sh top-tracks long_term 10` — their all-time favorites
+3. `${CLAUDE_PLUGIN_ROOT}/scripts/spotify.sh playlists 20` — their existing playlists
 
 Summarize what you found in a friendly way. For example:
 
@@ -103,7 +104,7 @@ Default: yes (audio_enabled: true)
 Once all questions are answered, create the preferences file at `.claude/claude-code-music.local.md` in the project directory.
 
 First, read the template from the plugin's references to use as a base:
-- Read `skills/music/references/preferences-template.md`
+- Read `${CLAUDE_PLUGIN_ROOT}/skills/music/references/preferences-template.md`
 
 Then write the file at `.claude/claude-code-music.local.md` using this structure — fill in ALL fields from the user's answers:
 
@@ -167,13 +168,13 @@ Time to make sure everything works. Tell the user:
 
 > Let's test this out! I'll play something matching your default mood.
 
-Use `mcp__spotify__get-recommendations` with the genres from the user's chosen default mood as `seedGenres`, and if you have seed artists or top tracks from Step 3, include those as `seedArtists` or `seedTracks` for better personalization. Set `limit: 5`.
+Run `${CLAUDE_PLUGIN_ROOT}/scripts/spotify.sh recommend "<default mood genres>" 5` with the genres from the user's chosen default mood.
 
-Pick the first result and play it with `mcp__spotify__play-track`.
+Parse the JSON to get the first track's ID, then run `${CLAUDE_PLUGIN_ROOT}/scripts/spotify.sh play <trackId>`.
 
 If it works, confirm what's playing. If audio_enabled is true, also run these commands to demo the audio:
-- `scripts/speak.sh song` — announces the track aloud
-- `scripts/speak.sh time` — speaks the current time
+- `${CLAUDE_PLUGIN_ROOT}/scripts/speak.sh song` — announces the track aloud
+- `${CLAUDE_PLUGIN_ROOT}/scripts/speak.sh time` — speaks the current time
 
 If playback fails (no active device), remind them to open Spotify and let them know they can test later with `/music <mood>`.
 

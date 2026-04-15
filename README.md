@@ -41,6 +41,8 @@ export SPOTIFY_CLIENT_ID="your_client_id"
 export SPOTIFY_CLIENT_SECRET="your_client_secret"
 ```
 
+Add these to your `~/.zshrc` or `~/.bashrc` so they persist.
+
 ### 3. Install the plugin
 
 **Option A: Plugin Marketplace (recommended)**
@@ -48,7 +50,7 @@ export SPOTIFY_CLIENT_SECRET="your_client_secret"
 Inside Claude Code, run:
 
 ```
-/plugin install claude-code-music@claude-code-music
+/install claude-code-music@claude-code-music
 ```
 
 If the marketplace isn't registered yet, add it once to `~/.claude/settings.json`:
@@ -71,7 +73,7 @@ cd your-project
 git clone https://github.com/shdowofdeath/claude-code-music.git .claude-code-music
 ```
 
-The plugin is auto-discovered by Claude Code. The MCP Spotify server is fetched automatically via `npx` — no separate install needed.
+The plugin is auto-discovered by Claude Code. No MCP server, no Node.js, no npm — just bash and curl.
 
 ### 4. Run setup
 
@@ -82,7 +84,7 @@ Open Claude Code and run:
 ```
 
 The wizard will:
-- Authenticate with Spotify
+- Authenticate with Spotify (opens browser for one-time OAuth)
 - Learn your music taste from your listening history
 - Walk you through preference setup
 - Play a test track to confirm it works
@@ -121,6 +123,15 @@ Output: `♫ Song Name - Artist | 14:32`
 | `/music taste` | Update your preferences |
 
 ## How it Works
+
+### No MCP Server
+
+Unlike most Spotify integrations, this plugin doesn't use an MCP server. It uses a lightweight bash script (`scripts/spotify.sh`) that calls the Spotify API directly with `curl`. Claude runs the script via Bash when it needs to search, play, pause, or get recommendations.
+
+This means:
+- **Zero Node.js dependencies** — no `npm install`, no `node_modules`
+- **No background server** — nothing to crash or fail silently
+- **Just bash + curl + python3** — tools already on your machine
 
 ### Mood Detection
 
@@ -172,13 +183,13 @@ Edit the file directly anytime — changes take effect immediately.
 claude-code-music/
 ├── .claude-plugin/
 │   └── plugin.json              # Plugin manifest
-├── .mcp.json                    # Auto-starts Spotify MCP server via npx
 ├── commands/
 │   ├── music.md                 # /music command
 │   └── music-setup.md           # /music-setup wizard
 ├── hooks/
 │   └── hooks.json               # Session start, mood detection, celebrations
 ├── scripts/
+│   ├── spotify.sh               # Spotify API client (curl-based, ~300 lines)
 │   ├── now-playing.sh           # Status line (♫ Song - Artist | HH:MM)
 │   └── speak.sh                 # TTS announcements
 ├── skills/
@@ -189,7 +200,7 @@ claude-code-music/
 └── STATUSLINE.md                # Status line setup guide
 ```
 
-The plugin uses the [mcp-claude-spotify](https://github.com/imprvhub/mcp-claude-spotify) MCP server for Spotify API access. It's fetched automatically via `npx` — no manual installation required.
+`scripts/spotify.sh` handles everything: OAuth login, token refresh, and all Spotify API calls. Tokens are cached at `~/.spotify-mcp/tokens.json` so you only authenticate once.
 
 ## Requirements
 
@@ -197,7 +208,7 @@ The plugin uses the [mcp-claude-spotify](https://github.com/imprvhub/mcp-claude-
 - Spotify account (free or premium)
 - Spotify desktop app running on any device
 - Spotify API credentials ([get them here](https://developer.spotify.com/dashboard))
-- macOS or Linux
+- bash, curl, python3 (pre-installed on macOS and most Linux)
 
 ## License
 
